@@ -1,0 +1,39 @@
+spring:
+log4j:
+  logger:
+    httpclient:
+      wire: DEBUG
+
+client:
+  id: 9Vw-IWYHtUPgM63RheJvYiDfhTuJ2Vei1xZrYPxZ8CI=
+  secret: LX7ahvinj-ryvx3mXVh4zEH0i1ei98qSfa8F4PDwM7o=
+  redirectUri: http://localhost:4000/redirecting
+  financialId: 0015800000jfwB4AAI
+  state: ABC
+  authorizationUsername: 123456789012@team.acc.org
+  authorizationAccount: 50000012345601
+  tokenUrl: https://ob.natwest.useinfinite.io/token
+  initRunning: true
+
+
+tls:
+  alias:
+  enableMatls: false
+  keyStore:
+    location:
+    password:
+  trustStore:
+    location:
+    password:
+
+aisp:
+  target:
+    context: /open-banking/v3.1/aisp
+    baseUri: https://ob.natwest.useinfinite.io
+    audience: https://api.natwest.useinfinite.io/authorize
+
+pisp:
+  target:
+    context: /open-banking/v3.1/pisp
+    baseUri: https://ob.natwest.useinfinite.io
+    audience: https://api.natwest.useinfinite.io/authorize
