@@ -15,84 +15,88 @@ import static com.bankofapis.remote.common.Endpoints.*;
 @RequestMapping("/open-banking/*/aisp")
 public class AispController {
 
-    private AispService aispService;
+	private AispService aispService;
 
-    @Autowired
-    public AispController(AispService aispService) {
-        this.aispService = aispService;
-    }
+	@Autowired
+	public AispController(AispService aispService) {
+		this.aispService = aispService;
+	}
 
-    @GetMapping(value = OB_JOURNEY_INIT)
-    public String initialize(HttpServletResponse response) {
-        return aispService.initialize();
-    }
+	@GetMapping(value = OB_JOURNEY_INIT)
+	public String initialize(HttpServletResponse response) {
+		return aispService.initialize();
+	}
 
-    @PostMapping(value = ACCOUNT_ACCESS_CONSENT_ENDPOINT)
-    public OBReadDomesticConsentResponse aispConsentSetup(
-        @RequestBody OBReadDomesticConsent obReadDataDomesticConsent) {
-        return aispService.createAispConsent(obReadDataDomesticConsent);
-    }
+	@PostMapping(value = ACCOUNT_ACCESS_CONSENT_ENDPOINT)
+	public OBReadDomesticConsentResponse aispConsentSetup(
+			@RequestBody OBReadDomesticConsent obReadDataDomesticConsent) {
+		return aispService.createAispConsent(obReadDataDomesticConsent);
+	}
 
-    @GetMapping(value = AUTHORIZATION_OAUTH2_ENDPOINT)
-    public String aispConsentAuthUrl(HttpServletRequest request) {
-        return aispService.createAuthorizeUri(request.getParameter(CONSENT_ID_HEADER));
-    }
+	@GetMapping(value = AUTHORIZATION_OAUTH2_ENDPOINT)
+	public String aispConsentAuthUrl(HttpServletRequest request) {
+		return aispService.createAuthorizeUri(request.getParameter(CONSENT_ID_HEADER));
+	}
 
-    @GetMapping(value = ACCOUNT_LIST_ENDPOINT)
-    public OBReadDataResponse<OBReadAccountList> getAccounts() {
-        return aispService.getAccountResponse();
-    }
+	@GetMapping(value = ACCOUNT_LIST_ENDPOINT)
+	public OBReadDataResponse<OBReadAccountList> getAccounts() {
+		return aispService.getAccountResponse();
+	}
 
-    @GetMapping(value = ACCOUNT_ID_ENDPOINT)
-    public OBReadDataResponse<OBReadAccountList> getAccountById(
-        @PathVariable(value = "accountId") String accountId) {
-        return aispService.getAccountById(accountId);
-    }
+	@GetMapping(value = ACCOUNT_ID_ENDPOINT)
+	public OBReadDataResponse<OBReadAccountList> getAccountById(@PathVariable(value = "accountId") String accountId) {
+		return aispService.getAccountById(accountId);
+	}
 
-    @GetMapping(value = ACCOUNT_ID_BALANCES_ENDPOINT)
-    public OBReadDataResponse<OBReadBalanceList> getBalance(
-        @PathVariable(value = "accountId") String accountId) {
-        return aispService.getBalanceById(accountId);
-    }
+	@GetMapping(value = ACCOUNT_ID_BALANCES_ENDPOINT)
+	public OBReadDataResponse<OBReadBalanceList> getBalance(@PathVariable(value = "accountId") String accountId) {
+		return aispService.getBalanceById(accountId);
+	}
 
-    @GetMapping(value = ACCOUNT_ID_TRANSACTIONS_ENDPOINT)
-    public OBReadDataResponse<OBReadTransactionList> getTransactions(
-        @PathVariable(value = "accountId") String accountId) {
-        return aispService.getTransactionsById(accountId);
-    }
+	@GetMapping(value = ACCOUNT_ID_TRANSACTIONS_ENDPOINT)
+	public OBReadDataResponse<OBReadTransactionList> getTransactions(
+			@PathVariable(value = "accountId") String accountId) {
+		return aispService.getTransactionsById(accountId);
+	}
 
-    @GetMapping(value = ACCOUNT_ID_BENEFICIARIES_ENDPOINT)
-    public OBReadDataResponse<OBReadBeneficiaryList> getBeneficiaries(
-        @PathVariable(value = "accountId") String accountId) {
-        return aispService.getBeneficiariesById(accountId);
-    }
+	@GetMapping(value = ACCOUNT_ID_BENEFICIARIES_ENDPOINT)
+	public OBReadDataResponse<OBReadBeneficiaryList> getBeneficiaries(
+			@PathVariable(value = "accountId") String accountId) {
+		return aispService.getBeneficiariesById(accountId);
+	}
 
-    @GetMapping(value = ACCOUNT_ID_DIRECT_DEBITS_ENDPOINT)
-    public OBReadDataResponse<OBReadDirectDebitList> getDirectDebitsById(
-        @PathVariable(value = "accountId") String accountId) {
-        return aispService.getDirectDebitsById(accountId);
-    }
+	@GetMapping(value = ACCOUNT_ID_DIRECT_DEBITS_ENDPOINT)
+	public OBReadDataResponse<OBReadDirectDebitList> getDirectDebitsById(
+			@PathVariable(value = "accountId") String accountId) {
+		return aispService.getDirectDebitsById(accountId);
+	}
 
-    @GetMapping(value = ACCOUNT_ID_STANDING_ORDERS_ENDPOINT)
-    public OBReadDataResponse<OBReadStandingOrderList> getStandingOrderById(
-        @PathVariable(value = "accountId") String accountId) {
-        return aispService.getStandingOrdersById(accountId);
-    }
+	@GetMapping(value = ACCOUNT_ID_STANDING_ORDERS_ENDPOINT)
+	public OBReadDataResponse<OBReadStandingOrderList> getStandingOrderById(
+			@PathVariable(value = "accountId") String accountId) {
+		return aispService.getStandingOrdersById(accountId);
+	}
 
-    @GetMapping(value = ACCOUNT_ID_PRODUCT_ENDPOINT)
-    public OBReadDataResponse<OBReadProductList> getProductById(
-        @PathVariable(value = "accountId") String accountId) {
-        return aispService.getProductById(accountId);
-    }
-    
-    /**
-     * Extended Controllers
-     */
-    @GetMapping(value = ACCOUNT_ID_BALANCESSUM_ENDPOINT)
+	@GetMapping(value = ACCOUNT_ID_PRODUCT_ENDPOINT)
+	public OBReadDataResponse<OBReadProductList> getProductById(@PathVariable(value = "accountId") String accountId) {
+		return aispService.getProductById(accountId);
+	}
+
+	/**
+	 * Extended Controllers
+	 */
+	@GetMapping(value = ACCOUNT_ID_BALANCESSUM_ENDPOINT)
 	public GetSumOfAllCreditsDebits getBalanceSum(
 
-		@PathVariable(value = "accountId") String accountId) {
+			@PathVariable(value = "accountId") String accountId) {
 		return aispService.getBalanceByIdSum(accountId);
 	}
-    
+
+	@GetMapping(value = ACCOUNT_ID_BALANCESSUM_MONTHLY_ENDPOINT)
+	public SummaryDebitsCreditMonthly getSumMonthlyDebitCredit(
+
+			@PathVariable(value = "accountId") String accountId) {
+		return aispService.getSumMonthlyDebitCredit(accountId);
+	}
+
 }

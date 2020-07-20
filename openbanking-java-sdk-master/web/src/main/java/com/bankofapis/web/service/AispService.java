@@ -169,9 +169,25 @@ public class AispService {
     /**
      * Extended Services from here on..
      */
+    
+    /**
+     * Sum of All Credit and Debits
+     * @param accountId
+     * @return two parameters with sumOfAllDebits and sumOfAllCredits
+     */
     public GetSumOfAllCreditsDebits getBalanceByIdSum(String accountId) {
         return aispRemote.getBalanceByIdSum(accountId, HttpRequestContext.get());
+    }
+    
+    /**
+     * Sum of All Credit and Debits categorised monthly
+     * @param accountId
+     * @return SummaryDebitsCreditMonthly
+     */
+    public SummaryDebitsCreditMonthly getSumMonthlyDebitCredit(String accountId)
+    {
+    	 return aispRemote.getSumMonthlyDebitCredit(accountId, HttpRequestContext.get());
+    }
     
 }
 
-}
