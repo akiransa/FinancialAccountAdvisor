@@ -8,21 +8,22 @@ public class Details {
 	
 	
 	@JsonProperty("MonthAndYear")
-    private String MonthAndYear;
+    private String monthAndYear;
 
     @JsonProperty("SumOfCredits")
     private double sumCredits;
     
     @JsonProperty("SumOfDebits")
     private double sumDebits;
-
-	public String getMonthYear() {
-		return MonthAndYear;
-	}
-
-	public void setMonthYear(String monthYear) {
-		MonthAndYear = monthYear;
-	}
+    
+    @JsonProperty("BalanceInThisMonth")
+    private double balanceInThisMonth;
+    
+    @JsonProperty("BalanceInPrevMonth")
+    private double balanceInPrevMonth;
+    
+    @JsonProperty("AccBalCurrMonth")
+    private double accBalCurMonth;
 
 	public double getSumCredits() {
 		return sumCredits;
@@ -38,6 +39,34 @@ public class Details {
 
 	public void setSumDebits(double d) {
 		this.sumDebits = d;
+	}
+
+	public double getBalanceInThisMonth() {
+		return balanceInThisMonth;
+	}
+
+	public void setBalanceInThisMonth(double balanceInThisMonth) {
+		this.balanceInThisMonth = balanceInThisMonth;
+	}
+
+	public void setMonthAndYear(String monthAndYear) {
+		this.monthAndYear = monthAndYear;
+	}
+
+	public double getBalanceInPrevMonth() {
+		return balanceInPrevMonth;
+	}
+
+	public void setBalanceInPrevMonth(double balanceInPrevMonth) {
+		this.balanceInPrevMonth = balanceInPrevMonth;
+	}
+
+	public double getAccBalCurMonth() {
+		return accBalCurMonth;
+	}
+
+	public void setAccBalCurMonth(double accBalCurMonth) {
+		this.accBalCurMonth = accBalCurMonth;
 	}
     
 }

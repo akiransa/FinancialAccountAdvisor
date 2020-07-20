@@ -15,6 +15,7 @@ import static com.bankofapis.remote.common.Endpoints.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -144,91 +145,121 @@ public class AispRemote {
 			OBReadBalance balance = (OBReadBalance) iterator.next();
 
 			if (balance.getCreditDebitIndicator().equals("Debit")) {
-				System.out.println(balance.getAmount().getAmount());
 				debitAmount = debitAmount + Float.parseFloat(balance.getAmount().getAmount());
 			}
 			if (balance.getCreditDebitIndicator().equals("Credit")) {
-				System.out.println(balance.getAmount().getAmount());
 				creditAmount = creditAmount + Float.parseFloat(balance.getAmount().getAmount());
 			}
 		}
 		GetSumOfAllCreditsDebits returnObj = new GetSumOfAllCreditsDebits();
-		returnObj.setSumAllCredits(debitAmount);
-		returnObj.setSumAllDebits(creditAmount);
+		returnObj.setSumAllCredits(creditAmount);
+		returnObj.setSumAllDebits(debitAmount);
 
 		return returnObj;
 
 	}
 
+	
+//	public SummaryDebitsCreditMonthly getSumMonthlyDebitCredit(HttpRequestHeader httpRequestHeader)
+//	{
+//		SummaryDebitsCreditMonthly summaryDetails = new SummaryDebitsCreditMonthly();
+//		OBReadDataResponse<OBReadAccountList> allAccountsList = getAccountResponse(httpRequestHeader);
+//		for (Iterator<OBReadAccountInformation> iterator = allAccountsList.getData().getAccount().iterator(); iterator.hasNext();) {
+//			System.err.println(iterator.next().getAccountId());
+//			
+//			summaryDetails=getSumMonthlyDebitCredit(iterator.next().getAccountId(),httpRequestHeader);
+//			
+//		}
+//	}
 	/**
-	 * Custom Method to retrieve Monthly Credits and Debits also categorised with year- MonthAndYear as Key
+	 * Custom Method to retrieve Monthly Credits and Debits also categorised with
+	 * year- MonthAndYear as Key
+	 * 
 	 * @return
 	 */
 	public SummaryDebitsCreditMonthly getSumMonthlyDebitCredit(String accountId, HttpRequestHeader httpRequestHeader) {
-		
+
 		Set<String> collectUniqueMonthYear = new TreeSet<String>();
 		SummaryDebitsCreditMonthly summaryDetails = new SummaryDebitsCreditMonthly();
 		List<Details> detailsList = new ArrayList<Details>();
-		
-		
+
 		try {
 			double sumCreditAmount = 0;
 			double sumDebitAmount = 0;
-			
+
 			OBReadDataResponse<OBReadTransactionList> transList = getTransactionsById(accountId, httpRequestHeader);
-		
+
 			/**
 			 * Get All Credits Sums Monthly
 			 */
 			for (Iterator<OBReadTransaction> iterator = transList.getData().getTransactionList().iterator(); iterator
 					.hasNext();) {
-				OBReadTransaction obReadTransactionGetMonthlyDebit = (OBReadTransaction) iterator
-						.next();
-				Date date1= new SimpleDateFormat("yyyy-MM-dd")
+				OBReadTransaction obReadTransactionGetMonthlyDebit = (OBReadTransaction) iterator.next();
+				Date date1 = new SimpleDateFormat("yyyy-MM-dd")
 						.parse(obReadTransactionGetMonthlyDebit.getBookingDateTime().substring(0, 10));
-				String monthYearUniqueKey = (date1.getMonth() + 1) + "-" + (date1.getYear() + 1900);
-				
+				String monthYearUniqueKey = (date1.getYear() + 1900 + "-" + (date1.getMonth() + 1));
+
 				collectUniqueMonthYear.add(monthYearUniqueKey);
 			}
-			
+
+			int detailsIndex = 0;
 			for (Iterator iterator = collectUniqueMonthYear.iterator(); iterator.hasNext();) {
 				String monthOfYear = (String) iterator.next();
-				System.out.println(monthOfYear);
 				Details details = new Details();
-				
-				for (Iterator<OBReadTransaction> iterator2 = transList.getData().getTransactionList().iterator(); iterator2
-						.hasNext();) {
-					OBReadTransaction obReadTransactionGetMonthlyDebit = (OBReadTransaction) iterator2
-							.next();
-					Date date1= new SimpleDateFormat("yyyy-MM-dd")
+
+				for (Iterator<OBReadTransaction> iterator2 = transList.getData().getTransactionList()
+						.iterator(); iterator2.hasNext();) {
+					OBReadTransaction obReadTransactionGetMonthlyDebit = (OBReadTransaction) iterator2.next();
+					Date date1 = new SimpleDateFormat("yyyy-MM-dd")
 							.parse(obReadTransactionGetMonthlyDebit.getBookingDateTime().substring(0, 10));
-					String monthYearUniqueKey = (date1.getMonth() + 1) + "-" + (date1.getYear() + 1900);
-					
+
+					String monthYearUniqueKey = (date1.getYear() + 1900 + "-" + (date1.getMonth() + 1));
+
 					if (monthOfYear.equals(monthYearUniqueKey)) {
 						if (obReadTransactionGetMonthlyDebit.getCreditDebitIndicator().equals("Debit")) {
-							sumDebitAmount= sumDebitAmount
+							sumDebitAmount = sumDebitAmount
 									+ Float.parseFloat(obReadTransactionGetMonthlyDebit.getAmount().getAmount());
-							
-							}
-					else if (obReadTransactionGetMonthlyDebit.getCreditDebitIndicator().equals("Credit")) {
-						sumCreditAmount= sumCreditAmount
-								+ Float.parseFloat(obReadTransactionGetMonthlyDebit.getAmount().getAmount());
-						
-					}
-						
+
+						} else if (obReadTransactionGetMonthlyDebit.getCreditDebitIndicator().equals("Credit")) {
+							sumCreditAmount = sumCreditAmount
+									+ Float.parseFloat(obReadTransactionGetMonthlyDebit.getAmount().getAmount());
+
+						}
+
 					}
 				}
-				details.setMonthYear(monthOfYear);
+
+				details.setMonthAndYear(monthOfYear);
 				details.setSumCredits(sumCreditAmount);
 				details.setSumDebits(sumDebitAmount);
-				detailsList.add(details);
+				details.setBalanceInThisMonth(sumCreditAmount - sumDebitAmount);
+				if (detailsIndex != 0) {
+					details.setBalanceInPrevMonth(detailsList.get(detailsIndex - 1).getBalanceInThisMonth());
+					
+				}
 				
+				double accountBalance=0.0;
+				for (int i = 0; i < detailsList.size()+1; i++) {
+					if (i!=0) {
+						accountBalance=detailsList.get(i-1).getAccBalCurMonth()+sumCreditAmount - sumDebitAmount;
+					}else
+					{
+						accountBalance=sumCreditAmount - sumDebitAmount;
+					}
+					
+				}
+
+				details.setAccBalCurMonth(accountBalance);
+				detailsList.add(details);
+
+				detailsIndex = detailsIndex + 1;
 			}
+
 			summaryDetails.setDetails(detailsList);
 			return summaryDetails;
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return summaryDetails;}
+		return summaryDetails;
+	}
 }
