@@ -5,12 +5,12 @@ log4j:
       wire: DEBUG
 
 client:
-  id: 9Vw-IWYHtUPgM63RheJvYiDfhTuJ2Vei1xZrYPxZ8CI=
-  secret: LX7ahvinj-ryvx3mXVh4zEH0i1ei98qSfa8F4PDwM7o=
+  id: YW8Vsl-74kCtm0UKmN8CVX9RFfVTgbYfOGHwCVI3LWw=
+  secret: SQlpbe2Ys8x07KFeLjjsXpmzZHqOhwC5Dn25KEzAYdM=
   redirectUri: http://localhost:4000/redirecting
   financialId: 0015800000jfwB4AAI
   state: ABC
-  authorizationUsername: 123456789012@team.acc.org
+  authorizationUsername: 117707657380@team.acc.org
   authorizationAccount: 50000012345601
   tokenUrl: https://ob.natwest.useinfinite.io/token
   initRunning: true

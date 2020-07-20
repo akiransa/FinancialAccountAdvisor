@@ -217,20 +217,14 @@ public class AispRemote {
 					}
 						
 					}
-					
-					
 				}
 				details.setMonthYear(monthOfYear);
 				details.setSumCredits(sumCreditAmount);
 				details.setSumDebits(sumDebitAmount);
 				detailsList.add(details);
 				
-				
-				
 			}
-			
 			summaryDetails.setDetails(detailsList);
-			
 			return summaryDetails;
 		}
 		catch(Exception e) {
