@@ -12,6 +12,8 @@ import org.springframework.web.client.RestTemplate;
 
 import static com.bankofapis.remote.common.Endpoints.*;
 
+import java.util.Iterator;
+
 public class AispRemote {
 
     private static final Logger logger = LoggerFactory.getLogger(AispRemote.class);
@@ -124,4 +126,38 @@ public class AispRemote {
                 }, accountId).getBody();
 
     }
+    
+    /**
+     * Extended from here on
+     */
+    /**
+	 * Custom Method Written to retrieve Sum of All Debits and Sum of All Credits
+	 * @param accountId
+	 * @param httpRequestHeader
+	 * @return Sum of All Debits and Credits from the accountId given
+	 */
+	public GetSumOfAllCreditsDebits getBalanceByIdSum(String accountId, HttpRequestHeader httpRequestHeader) {
+		float debitAmount = 0;
+		float creditAmount = 0;
+		OBReadDataResponse<OBReadBalanceList> result = getBalanceById(accountId, httpRequestHeader);
+
+		for (Iterator iterator = result.getData().getAccount().iterator(); iterator.hasNext();) {
+			OBReadBalance balance = (OBReadBalance) iterator.next();
+
+			if (balance.getCreditDebitIndicator().equals("Debit")) {
+				System.out.println(balance.getAmount().getAmount());
+				debitAmount = debitAmount + Float.parseFloat(balance.getAmount().getAmount());
+			}
+			if (balance.getCreditDebitIndicator().equals("Credit")) {
+				System.out.println(balance.getAmount().getAmount());
+				creditAmount = creditAmount + Float.parseFloat(balance.getAmount().getAmount());
+			}
+		}
+		GetSumOfAllCreditsDebits returnObj = new GetSumOfAllCreditsDebits();
+		returnObj.setSumAllCredits(debitAmount);
+		returnObj.setSumAllDebits(creditAmount);
+
+		return returnObj;
+
+	}
 }

@@ -165,6 +165,13 @@ public class AispService {
             throw ex;
         }
     }
-
+    
+    /**
+     * Extended Services from here on..
+     */
+    public GetSumOfAllCreditsDebits getBalanceByIdSum(String accountId) {
+        return aispRemote.getBalanceByIdSum(accountId, HttpRequestContext.get());
+    
+}
 
 }

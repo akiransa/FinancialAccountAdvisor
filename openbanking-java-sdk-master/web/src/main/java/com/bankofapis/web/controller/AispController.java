@@ -84,4 +84,15 @@ public class AispController {
         @PathVariable(value = "accountId") String accountId) {
         return aispService.getProductById(accountId);
     }
+    
+    /**
+     * Extended Controllers
+     */
+    @GetMapping(value = ACCOUNT_ID_BALANCESSUM_ENDPOINT)
+	public GetSumOfAllCreditsDebits getBalanceSum(
+
+		@PathVariable(value = "accountId") String accountId) {
+		return aispService.getBalanceByIdSum(accountId);
+	}
+    
 }
