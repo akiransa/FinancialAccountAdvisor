@@ -86,10 +86,10 @@ public class AispController {
 	 * Extended Controllers
 	 */
 	@GetMapping(value = ACCOUNT_ID_BALANCESSUM_ENDPOINT)
-	public GetSumOfAllCreditsDebits getBalanceSum(
+	public GetSumOfAllCreditsDebits getBalanceSum()
 
-			@PathVariable(value = "accountId") String accountId) {
-		return aispService.getBalanceByIdSum(accountId);
+	{
+		return aispService.getBalanceByIdSum();
 	}
 
 	@GetMapping(value = ACCOUNT_ID_BALANCESSUM_MONTHLY_ENDPOINT)

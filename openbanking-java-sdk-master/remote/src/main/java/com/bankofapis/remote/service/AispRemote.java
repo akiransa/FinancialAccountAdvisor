@@ -134,23 +134,33 @@ public class AispRemote {
 	 * 
 	 * @param accountId
 	 * @param httpRequestHeader
-	 * @return Sum of All Debits and Credits from the accountId given
+	 * @return Sum of All Debits and Credits from all the accounts user has.
 	 */
-	public GetSumOfAllCreditsDebits getBalanceByIdSum(String accountId, HttpRequestHeader httpRequestHeader) {
+	public GetSumOfAllCreditsDebits getBalanceByIdSum(HttpRequestHeader httpRequestHeader) {
 		float debitAmount = 0;
 		float creditAmount = 0;
-		OBReadDataResponse<OBReadBalanceList> result = getBalanceById(accountId, httpRequestHeader);
+		OBReadDataResponse<OBReadAccountList> allAccountsList = getAccountResponse(httpRequestHeader);
+		for (Iterator<OBReadAccountInformation> iterator = allAccountsList.getData().getAccount().iterator(); iterator.hasNext();) {
+			System.err.println(iterator.next().getAccountId());
+			
+			
+			OBReadDataResponse<OBReadBalanceList> result = getBalanceById(accountId, httpRequestHeader);
 
-		for (Iterator iterator = result.getData().getAccount().iterator(); iterator.hasNext();) {
-			OBReadBalance balance = (OBReadBalance) iterator.next();
+			for (Iterator iterator1 = result.getData().getAccount().iterator(); iterator1.hasNext();) {
+				OBReadBalance balance = (OBReadBalance) iterator1.next();
 
-			if (balance.getCreditDebitIndicator().equals("Debit")) {
-				debitAmount = debitAmount + Float.parseFloat(balance.getAmount().getAmount());
+				if (balance.getCreditDebitIndicator().equals("Debit")) {
+					debitAmount = debitAmount + Float.parseFloat(balance.getAmount().getAmount());
+				}
+				if (balance.getCreditDebitIndicator().equals("Credit")) {
+					creditAmount = creditAmount + Float.parseFloat(balance.getAmount().getAmount());
+				}
 			}
-			if (balance.getCreditDebitIndicator().equals("Credit")) {
-				creditAmount = creditAmount + Float.parseFloat(balance.getAmount().getAmount());
-			}
+			
 		}
+		
+		
+		
 		GetSumOfAllCreditsDebits returnObj = new GetSumOfAllCreditsDebits();
 		returnObj.setSumAllCredits(creditAmount);
 		returnObj.setSumAllDebits(debitAmount);

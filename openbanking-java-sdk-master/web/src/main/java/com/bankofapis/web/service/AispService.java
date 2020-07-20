@@ -175,8 +175,8 @@ public class AispService {
      * @param accountId
      * @return two parameters with sumOfAllDebits and sumOfAllCredits
      */
-    public GetSumOfAllCreditsDebits getBalanceByIdSum(String accountId) {
-        return aispRemote.getBalanceByIdSum(accountId, HttpRequestContext.get());
+    public GetSumOfAllCreditsDebits getBalanceByIdSum() {
+        return aispRemote.getBalanceByIdSum(HttpRequestContext.get());
     }
     
     /**
