@@ -124,3 +124,19 @@ Using the Existing APIs we were able to come up with the following endpoints:
         }
     }
 ]
+>**ACCOUNT_ID_TRANSACTIONS_CATEGORY_SUM_ENDPOINT = "/accounts/{accountId}/transaction_category/total";;**
+>-  This is for adding up all ampunts against a category
+   
+    {
+        "category": "Regular Payments",
+        "Amount": {
+            "Amount": "1234.48",
+            "Currency": "GBP"
+        }
+    },
+    {
+        "category": "HouseHold Expense",
+        "Amount": {
+            "Amount": "2326.48",
+            "Currency": "GBP"
+        }
