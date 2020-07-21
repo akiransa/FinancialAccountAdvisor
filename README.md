@@ -60,6 +60,7 @@ Using the Existing APIs we were able to come up with the following endpoints:
     ],
     "SumOfAllDebits": 0.0,
     "SumOfAllCredits": 258428.18376922607
+    "AvgBalPerMonAvailable": 63615.80344963074
     }
 
 
@@ -92,4 +93,51 @@ Using the Existing APIs we were able to come up with the following endpoints:
         "AvailBalanceForCurMonth": 290760.26
     }
 
-
+>**ACCOUNT_ID_TRANSACTIONS_CATEGORY_MON_ENDPOINT = "/accounts/{accountId}/transaction_category/monthly";";**
+>-  This is for retrieving a transactions in the month & assign a category
+   
+    {
+        "category": "Regular Payments",
+        "Amount": {
+            "Amount": "26.48",
+            "Currency": "GBP"
+        }
+    },
+    {
+        "category": "HouseHold Expense",
+        "Amount": {
+            "Amount": "26.48",
+            "Currency": "GBP"
+        }
+    },
+    {
+        "category": "Dining",
+        "Amount": {
+            "Amount": "26.48",
+            "Currency": "GBP"
+        }
+    },
+    {
+        "category": "Amazon",
+        "Amount": {
+            "Amount": "26.48",
+            "Currency": "GBP"
+        }
+    }
+]
+>**ACCOUNT_ID_TRANSACTIONS_CATEGORY_SUM_ENDPOINT = "/accounts/{accountId}/transaction_category/total";;**
+>-  This is for adding up all amounts against a category -> To produce categorical spending
+   
+    {
+        "category": "Regular Payments",
+        "Amount": {
+            "Amount": "1234.48",
+            "Currency": "GBP"
+        }
+    },
+    {
+        "category": "HouseHold Expense",
+        "Amount": {
+            "Amount": "2326.48",
+            "Currency": "GBP"
+        }
