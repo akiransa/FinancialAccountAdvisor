@@ -30,7 +30,8 @@ Using the Existing APIs we were able to come up with the following endpoints:
 >**ACCOUNT_ID_BALANCESSUM_ENDPOINT = "/accounts/balances";**
 >
 >- Loop through all the accounts for which the user has provided Consent with and retrieves the Consolidated Balances of Credits and Debits.
-{
+
+    {
     "BalanceDetails": [
         {
             "AccountNo": "3e82c5e6-3d02-4dd9-a69b-cc6629734c2d",
