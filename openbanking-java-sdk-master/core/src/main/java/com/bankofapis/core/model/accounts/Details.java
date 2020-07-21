@@ -16,10 +16,10 @@ public class Details {
     @JsonProperty("SumOfDebits")
     private double sumDebits;
     
-    @JsonProperty("BalanceInThisMonth")
+    @JsonProperty("BalanceForThisMonth")
     private double balanceInThisMonth;
     
-    @JsonProperty("BalanceInPrevMonth")
+    @JsonProperty("BalanceForPrevMonth")
     private double balanceInPrevMonth;
     
     @JsonProperty("AccBalCurrMonth")

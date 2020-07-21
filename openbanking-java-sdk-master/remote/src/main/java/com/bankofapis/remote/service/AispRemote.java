@@ -212,10 +212,18 @@ public class AispRemote {
 			}
 
 			int detailsIndex = 0;
+			
 			for (Iterator iterator = collectUniqueMonthYear.iterator(); iterator.hasNext();) {
 				String monthOfYear = (String) iterator.next();
 				Details details = new Details();
-
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+				
+				String previousBookingDateAsString = "1900-01-01T00:00:00.000Z";
+						
+						
+				Date previousBookingTime = format.parse(previousBookingDateAsString);
+				double accountBalance = 0.0;
+				
 				for (Iterator<OBReadTransaction> iterator2 = transList.getData().getTransactionList()
 						.iterator(); iterator2.hasNext();) {
 					OBReadTransaction obReadTransactionGetMonthlyDebit = (OBReadTransaction) iterator2.next();
@@ -223,7 +231,10 @@ public class AispRemote {
 							.parse(obReadTransactionGetMonthlyDebit.getBookingDateTime().substring(0, 10));
 
 					String monthYearUniqueKey = (date1.getYear() + 1900 + "-" + (date1.getMonth() + 1));
-
+					
+					
+					Date currentBookingTime = format.parse(obReadTransactionGetMonthlyDebit.getBookingDateTime());
+					
 					if (monthOfYear.equals(monthYearUniqueKey)) {
 						if (obReadTransactionGetMonthlyDebit.getCreditDebitIndicator().equals("Debit")) {
 							sumDebitAmount = sumDebitAmount
@@ -234,8 +245,23 @@ public class AispRemote {
 									+ Float.parseFloat(obReadTransactionGetMonthlyDebit.getAmount().getAmount());
 
 						}
+						/// if booktime greater than current 
+						if (previousBookingTime!=null) {
+							System.err.println(previousBookingTime.compareTo(currentBookingTime));
+							if(currentBookingTime.compareTo(previousBookingTime)>=0) { 
+								accountBalance=Double.parseDouble(obReadTransactionGetMonthlyDebit.getBalance().getAmount().getAmount());
+								System.err.println(accountBalance);
+								System.out.println("reached here.. !atleast");
+							}
+						}
+						else {
+							previousBookingTime=currentBookingTime;
+							System.err.println("reached here.. set booking time?");
+						}
 
 					}
+					
+					
 				}
 
 				details.setMonthAndYear(monthOfYear);
@@ -246,18 +272,21 @@ public class AispRemote {
 					details.setBalanceInPrevMonth(detailsList.get(detailsIndex - 1).getBalanceInThisMonth());
 
 				}
-
-				double accountBalance = 0.0;
-				for (int i = 0; i < detailsList.size() + 1; i++) {
-					if (i != 0) {
-						accountBalance = detailsList.get(i - 1).getAccBalCurMonth() + sumCreditAmount - sumDebitAmount;
-					} else {
-						accountBalance = sumCreditAmount - sumDebitAmount;
-					}
-
-				}
-
 				details.setAccBalCurMonth(accountBalance);
+				
+				
+
+//				double accountBalance = 0.0;
+//				for (int i = 0; i < detailsList.size() + 1; i++) {
+//					if (i != 0) {
+//						accountBalance = detailsList.get(i - 1).getAccBalCurMonth() + sumCreditAmount - sumDebitAmount;
+//					} else {
+//						accountBalance = sumCreditAmount - sumDebitAmount;
+//					}
+//
+//				}
+
+				//details.setAccBalCurMonth(accountBalance);
 				detailsList.add(details);
 
 				detailsIndex = detailsIndex + 1;
