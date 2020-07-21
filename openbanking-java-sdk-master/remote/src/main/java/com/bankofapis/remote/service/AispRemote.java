@@ -136,41 +136,46 @@ public class AispRemote {
 	 * @param httpRequestHeader
 	 * @return Sum of All Debits and Credits from all the accounts user has.
 	 */
-	public GetSumOfAllCreditsDebits getBalanceByIdSum(HttpRequestHeader httpRequestHeader) {
-		float debitAmount = 0;
-		float creditAmount = 0;
+	public Balance getBalanceByIdSum(HttpRequestHeader httpRequestHeader) {
+		double debitAmount = 0;
+		double creditAmount = 0;
 		StringBuffer str=new StringBuffer();
-		GetSumOfAllCreditsDebits returnObj = new GetSumOfAllCreditsDebits();
+		
+		Balance returnObj = new Balance();
+		List<BalanceDetails> balDetailsMain = new ArrayList<BalanceDetails>();
+		
 		OBReadDataResponse<OBReadAccountList> allAccountsList = getAccountResponse(httpRequestHeader);
 		for (Iterator<OBReadAccountInformation> iterator = allAccountsList.getData().getAccount().iterator(); iterator
 				.hasNext();) {
+			BalanceDetails balDetail = new BalanceDetails();
 			
 			String account = iterator.next().getAccountId();
+			balDetail.setAccountNo(account);
 			str.append(account+",");
 			OBReadDataResponse<OBReadBalanceList> result = getBalanceById(account, httpRequestHeader);
-
+			
 			for (Iterator iterator1 = result.getData().getAccount().iterator(); iterator1.hasNext();) {
 				OBReadBalance balance = (OBReadBalance) iterator1.next();
-				
-			
 
 				if (balance.getCreditDebitIndicator().equals("Debit") && balance.getType().equals("InterimAvailable")) {
 					debitAmount = debitAmount + Float.parseFloat(balance.getAmount().getAmount());
-
+					
+					balDetail.setDebitBalance(Double.parseDouble(balance.getAmount().getAmount()));
 				}
 				if (balance.getCreditDebitIndicator().equals("Credit")
 						&& balance.getType().equals("InterimAvailable")) {
 					creditAmount = creditAmount + Float.parseFloat(balance.getAmount().getAmount());
+					balDetail.setCreditBalance(Double.parseDouble(balance.getAmount().getAmount()));
 				}
 			}
-
+			
+			balDetailsMain.add(balDetail);
 		}
 
-		returnObj.setAccountNo(str.toString());
 		returnObj.setSumAllCredits(creditAmount);
 		returnObj.setSumAllDebits(debitAmount);
+		returnObj.setBalanceDetails(balDetailsMain);
 		
-
 		return returnObj;
 
 	}

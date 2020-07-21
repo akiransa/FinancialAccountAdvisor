@@ -86,7 +86,7 @@ public class AispController {
 	 * Extended Controllers
 	 */
 	@GetMapping(value = ACCOUNT_ID_BALANCESSUM_ENDPOINT)
-	public GetSumOfAllCreditsDebits getBalanceSum()
+	public Balance getBalanceSum()
 
 	{
 		return aispService.getBalanceByIdSum();
