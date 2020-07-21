@@ -3,14 +3,14 @@ FinancialAccountAdvisor as part of APIThon
 ****
 Using the Existing APIs we were able to come up with the following endpoints:
 
->** ACCOUNT_LISTALL_ENDPOINT = "/accountsInfo"; **
+>**ACCOUNT_LISTALL_ENDPOINT = "/accountsInfo";**
 >-  This is for retrieving a subset of the Accounts resulting just the AccountIdentificationNumber and AccountNickName. This can be used to render display to user.
 
->** ACCOUNT_ID_BALANCESSUM_ENDPOINT = "/accounts/balances"; **
+>**ACCOUNT_ID_BALANCESSUM_ENDPOINT = "/accounts/balances";**
 >
 >- Loop through all the accounts for which the user has provided Consent with and retrieves the Consolidated Balances of Credits and Debits.
 >
->** ACCOUNT_ID_BALANCESSUM_MONTHLY_ENDPOINT ="/accounts/{accountId}/transactions/monthly"; ** 
+>**ACCOUNT_ID_BALANCESSUM_MONTHLY_ENDPOINT ="/accounts/{accountId}/transactions/monthly"** 
 >- Loop through all the Transactions done by a user, for a individual account, categorised on  monthly basis 
 >- Credits for the current Month
 >- Debits for the current Month
@@ -29,7 +29,7 @@ Using the Existing APIs we were able to come up with the following endpoints:
          "AccBalCurrMonth": 19699.21
     }
 
->** ACCOUNT_ID_BALANCESSUM_MONTHLY_ENDPOINT_ALL ="/accounts/transactions/monthly"; **
+>**ACCOUNT_ID_BALANCESSUM_MONTHLY_ENDPOINT_ALL ="/accounts/transactions/monthly"**
 >- Loop through all the Accounts for which user has provided Consent with.
 >- Again categorised by Month And Year, retrieves all the Debits and Credits , across all the accounts.
 >
