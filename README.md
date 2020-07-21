@@ -9,7 +9,7 @@ Using the Existing APIs we were able to come up with the following endpoints:
 >**ACCOUNT_ID_BALANCESSUM_ENDPOINT = "/accounts/balances";**
 >
 >- Loop through all the accounts for which the user has provided Consent with and retrieves the Consolidated Balances of Credits and Debits.
->
+
 >**ACCOUNT_ID_BALANCESSUM_MONTHLY_ENDPOINT ="/accounts/{accountId}/transactions/monthly"** 
 >- Loop through all the Transactions done by a user, for a individual account, categorised on  monthly basis 
 >- Credits for the current Month
@@ -17,7 +17,6 @@ Using the Existing APIs we were able to come up with the following endpoints:
 >- Net Balance for the current Month
 >- Balance in comparision to Previous Month
 >- Account Balance for that Month
-
 
     {
          "AccountNo": "da97d767-52ab-40cf-895c-5f1f6d663ec9",
