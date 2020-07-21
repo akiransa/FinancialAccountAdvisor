@@ -125,7 +125,7 @@ Using the Existing APIs we were able to come up with the following endpoints:
     }
 ]
 >**ACCOUNT_ID_TRANSACTIONS_CATEGORY_SUM_ENDPOINT = "/accounts/{accountId}/transaction_category/total";;**
->-  This is for adding up all ampunts against a category
+>-  This is for adding up all amounts against a category -> To produce categorical spending
    
     {
         "category": "Regular Payments",
