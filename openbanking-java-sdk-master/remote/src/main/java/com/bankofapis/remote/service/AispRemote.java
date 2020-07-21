@@ -188,7 +188,6 @@ public class AispRemote {
 
 			SummaryDebitsCreditMonthly details = new SummaryDebitsCreditMonthly();
 			String accountId = iterator.next().getAccountId();
-			System.err.println(accountId);
 			details = getSumMonthlyDebitCredit(accountId, httpRequestHeader);
 
 			/**
@@ -206,7 +205,9 @@ public class AispRemote {
 
 		for (Iterator iterator = collectUniqueMonthYear.iterator(); iterator.hasNext();) {
 			String string = (String) iterator.next();
-			System.out.println(string);
+			System.out.println("**********************************************************");
+			System.out.println("For the Month and Year of :"+string);
+			System.out.println("**********************************************************");
 			DetailsConsolidated detailsConsolidated = new DetailsConsolidated();
 			double creditBalanceForThisMonthTotal = 0.0;
 			double debitBalanceForThisMonthTotal = 0.0;
@@ -217,12 +218,11 @@ public class AispRemote {
 				SummaryDebitsCreditMonthly details = new SummaryDebitsCreditMonthly();
 				List<Details> detailsListSumUp = new ArrayList<Details>();
 				String accountId = iterator2.next().getAccountId();
-				System.err.println(accountId);
+				System.err.println("Account Processing for : "+accountId);
 				details = getSumMonthlyDebitCredit(accountId, httpRequestHeader);
 
 				for (int i = 0; i < details.getDetails().size(); i++) {
 					if (details.getDetails().get(i).getMonthAndYear().equals(string)) {
-						System.err.println("Found : " + string);
 						creditBalanceForThisMonthTotal = creditBalanceForThisMonthTotal
 								+ details.getDetails().get(i).getSumCredits();
 						debitBalanceForThisMonthTotal = debitBalanceForThisMonthTotal = details.getDetails().get(i)
@@ -241,7 +241,7 @@ public class AispRemote {
 			newObjectdetailsList.add(detailsConsolidated);
 		}
 		newObject.setDetailsConsolidated(newObjectdetailsList);
-
+		System.out.println("Done!\n**********************************************************");
 		return newObject;
 	}
 
