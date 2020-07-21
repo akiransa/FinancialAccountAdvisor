@@ -1,5 +1,10 @@
 # FinancialAccountAdvisor
 FinancialAccountAdvisor as part of APIThon
+We are the Mavericks - Anand , Geetha and Susant from 'Enterprise Services Platform/Microservice enthusiasts- Presenting the Idea/ in line with financial Well being theme /(for Consumer & NatWest)
+
+This is our  'Trusted ADvisor API'- This API analyses  & categorises transactions and publishes the graphical output.
+
+The intent is to identify the "surplus" amount /that the consumer could pool in/ to other investments or pay off the liabilities.
 ****
 Using the Existing APIs we were able to come up with the following endpoints:
 
