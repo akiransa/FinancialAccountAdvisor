@@ -9,6 +9,10 @@ public class GetSumOfAllCreditsDebits {
 
     @JsonProperty("SumOfAllCredits")
     private Float sumAllCredits;
+    
+    @JsonProperty("AccountNos")
+    private String accountNo;
+
 
 	public Float getSumAllDebits() {
 		return sumAllDebits;
@@ -25,4 +29,14 @@ public class GetSumOfAllCreditsDebits {
 	public void setSumAllCredits(Float sumAllCredits) {
 		this.sumAllCredits = sumAllCredits;
 	}
+
+	public String getAccountNo() {
+		return accountNo;
+	}
+
+	public void setAccountNo(String accountNo) {
+		this.accountNo = accountNo;
+	}
+
+
 }

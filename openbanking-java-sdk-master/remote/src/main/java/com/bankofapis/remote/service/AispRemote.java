@@ -139,15 +139,20 @@ public class AispRemote {
 	public GetSumOfAllCreditsDebits getBalanceByIdSum(HttpRequestHeader httpRequestHeader) {
 		float debitAmount = 0;
 		float creditAmount = 0;
+		StringBuffer str=new StringBuffer();
+		GetSumOfAllCreditsDebits returnObj = new GetSumOfAllCreditsDebits();
 		OBReadDataResponse<OBReadAccountList> allAccountsList = getAccountResponse(httpRequestHeader);
 		for (Iterator<OBReadAccountInformation> iterator = allAccountsList.getData().getAccount().iterator(); iterator
 				.hasNext();) {
-
+			
 			String account = iterator.next().getAccountId();
+			str.append(account+",");
 			OBReadDataResponse<OBReadBalanceList> result = getBalanceById(account, httpRequestHeader);
 
 			for (Iterator iterator1 = result.getData().getAccount().iterator(); iterator1.hasNext();) {
 				OBReadBalance balance = (OBReadBalance) iterator1.next();
+				
+			
 
 				if (balance.getCreditDebitIndicator().equals("Debit") && balance.getType().equals("InterimAvailable")) {
 					debitAmount = debitAmount + Float.parseFloat(balance.getAmount().getAmount());
@@ -161,9 +166,10 @@ public class AispRemote {
 
 		}
 
-		GetSumOfAllCreditsDebits returnObj = new GetSumOfAllCreditsDebits();
+		returnObj.setAccountNo(str.toString());
 		returnObj.setSumAllCredits(creditAmount);
 		returnObj.setSumAllDebits(debitAmount);
+		
 
 		return returnObj;
 
