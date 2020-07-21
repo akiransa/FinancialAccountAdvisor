@@ -140,27 +140,27 @@ public class AispRemote {
 		float debitAmount = 0;
 		float creditAmount = 0;
 		OBReadDataResponse<OBReadAccountList> allAccountsList = getAccountResponse(httpRequestHeader);
-		for (Iterator<OBReadAccountInformation> iterator = allAccountsList.getData().getAccount().iterator(); iterator.hasNext();) {
-			System.err.println(iterator.next().getAccountId());
-			
-			
-			OBReadDataResponse<OBReadBalanceList> result = getBalanceById(accountId, httpRequestHeader);
+		for (Iterator<OBReadAccountInformation> iterator = allAccountsList.getData().getAccount().iterator(); iterator
+				.hasNext();) {
+
+			String account = iterator.next().getAccountId();
+			OBReadDataResponse<OBReadBalanceList> result = getBalanceById(account, httpRequestHeader);
 
 			for (Iterator iterator1 = result.getData().getAccount().iterator(); iterator1.hasNext();) {
 				OBReadBalance balance = (OBReadBalance) iterator1.next();
 
-				if (balance.getCreditDebitIndicator().equals("Debit")) {
+				if (balance.getCreditDebitIndicator().equals("Debit") && balance.getType().equals("InterimAvailable")) {
 					debitAmount = debitAmount + Float.parseFloat(balance.getAmount().getAmount());
+
 				}
-				if (balance.getCreditDebitIndicator().equals("Credit")) {
+				if (balance.getCreditDebitIndicator().equals("Credit")
+						&& balance.getType().equals("InterimAvailable")) {
 					creditAmount = creditAmount + Float.parseFloat(balance.getAmount().getAmount());
 				}
 			}
-			
+
 		}
-		
-		
-		
+
 		GetSumOfAllCreditsDebits returnObj = new GetSumOfAllCreditsDebits();
 		returnObj.setSumAllCredits(creditAmount);
 		returnObj.setSumAllDebits(debitAmount);
@@ -169,7 +169,6 @@ public class AispRemote {
 
 	}
 
-	
 //	public SummaryDebitsCreditMonthly getSumMonthlyDebitCredit(HttpRequestHeader httpRequestHeader)
 //	{
 //		SummaryDebitsCreditMonthly summaryDetails = new SummaryDebitsCreditMonthly();
@@ -245,18 +244,17 @@ public class AispRemote {
 				details.setBalanceInThisMonth(sumCreditAmount - sumDebitAmount);
 				if (detailsIndex != 0) {
 					details.setBalanceInPrevMonth(detailsList.get(detailsIndex - 1).getBalanceInThisMonth());
-					
+
 				}
-				
-				double accountBalance=0.0;
-				for (int i = 0; i < detailsList.size()+1; i++) {
-					if (i!=0) {
-						accountBalance=detailsList.get(i-1).getAccBalCurMonth()+sumCreditAmount - sumDebitAmount;
-					}else
-					{
-						accountBalance=sumCreditAmount - sumDebitAmount;
+
+				double accountBalance = 0.0;
+				for (int i = 0; i < detailsList.size() + 1; i++) {
+					if (i != 0) {
+						accountBalance = detailsList.get(i - 1).getAccBalCurMonth() + sumCreditAmount - sumDebitAmount;
+					} else {
+						accountBalance = sumCreditAmount - sumDebitAmount;
 					}
-					
+
 				}
 
 				details.setAccBalCurMonth(accountBalance);
@@ -271,5 +269,36 @@ public class AispRemote {
 			e.printStackTrace();
 		}
 		return summaryDetails;
+	}
+
+	/**
+	 * gets All Account Information
+	 * 
+	 * @param httpRequestHeader
+	 * @return account name and Identification nos
+	 */
+	public AccountIdentificationDetails getAllAccountInfo(HttpRequestHeader httpRequestHeader) {
+		// TODO Auto-generated method stub
+
+		AccountIdentificationDetails accInfoDetails = new AccountIdentificationDetails();
+		List<AccountInfo> acctInfor = new ArrayList<AccountInfo>();
+		 
+
+		OBReadDataResponse<OBReadAccountList> allAccountsList = getAccountResponse(httpRequestHeader);
+		for (Iterator<OBReadAccountInformation> iterator = allAccountsList.getData().getAccount().iterator(); iterator
+				.hasNext();) {
+			List<OBReadAccount> acc= iterator.next().getAccount();
+			
+			for (int i = 0; i < acc.size(); i++) {
+				AccountInfo actInfo= new AccountInfo();
+				actInfo.setAccountIdentificationNumber(acc.get(i).getIdentification());
+				actInfo.setAccountName((acc.get(i).getName()));
+				acctInfor.add(actInfo);
+			}
+			
+
+		}
+		accInfoDetails.setAccountInfo(acctInfor);
+		return accInfoDetails;
 	}
 }

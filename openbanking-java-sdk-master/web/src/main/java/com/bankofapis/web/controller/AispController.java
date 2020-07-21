@@ -99,4 +99,10 @@ public class AispController {
 		return aispService.getSumMonthlyDebitCredit(accountId);
 	}
 
+	@GetMapping(value = ACCOUNT_LISTALL_ENDPOINT)
+	public AccountIdentificationDetails getAllAccountInfo() {
+
+		return aispService.getAllAccountInfo();
+	}
+
 }

@@ -188,6 +188,17 @@ public class AispService {
     {
     	 return aispRemote.getSumMonthlyDebitCredit(accountId, HttpRequestContext.get());
     }
+
+    /**
+     * Display Account Information on the page
+     * @return Account Name and Identification Number
+     */
+	public AccountIdentificationDetails getAllAccountInfo() {
+		// TODO Auto-generated method stub
+		return aispRemote.getAllAccountInfo(HttpRequestContext.get());
+		
+		
+	}
     
 }
 

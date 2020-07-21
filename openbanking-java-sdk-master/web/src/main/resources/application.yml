@@ -10,7 +10,7 @@ client:
   redirectUri: http://localhost:4000/redirecting
   financialId: 0015800000jfwB4AAI
   state: ABC
-  authorizationUsername: 117707657380@team.acc.org
+  authorizationUsername: 123456789012@team.acc.org
   authorizationAccount: 50000012345601
   tokenUrl: https://ob.natwest.useinfinite.io/token
   initRunning: true

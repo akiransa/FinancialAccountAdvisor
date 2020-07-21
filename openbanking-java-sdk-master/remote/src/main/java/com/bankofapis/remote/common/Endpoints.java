@@ -23,7 +23,8 @@ public class Endpoints {
     /**
      * Added Functionalities
      */
-    public static final String ACCOUNT_ID_BALANCESSUM_ENDPOINT = "/accounts/{accountId}/balances/sum";
+    public static final String ACCOUNT_ID_BALANCESSUM_ENDPOINT = "/accounts/balances";
+    public static final String ACCOUNT_LISTALL_ENDPOINT = "/accountsInfo";
     public static final String ACCOUNT_ID_BALANCESSUM_MONTHLY_ENDPOINT ="/accounts/{accountId}/transactions/monthly";
     
     
