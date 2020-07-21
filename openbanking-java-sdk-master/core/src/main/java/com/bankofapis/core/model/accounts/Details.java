@@ -51,9 +51,7 @@ public class Details {
 		this.balanceInThisMonth = balanceInThisMonth;
 	}
 
-	public void setMonthAndYear(String monthAndYear) {
-		this.monthAndYear = monthAndYear;
-	}
+	
 
 	public double getBalanceInPrevMonth() {
 		return balanceInPrevMonth;
@@ -77,6 +75,14 @@ public class Details {
 
 	public void setAccountNo(String accountNo) {
 		this.accountNo = accountNo;
+	}
+
+	public String getMonthAndYear() {
+		return monthAndYear;
+	}
+
+	public void setMonthAndYear(String monthAndYear) {
+		this.monthAndYear = monthAndYear;
 	}
     
 }

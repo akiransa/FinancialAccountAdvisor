@@ -200,7 +200,7 @@ public class AispService {
 		
 	}
 
-	public SummaryDebitsCreditMonthlyConsolidated getDebitsCreditMonthlyConsolidated() {
+	public DetailsAcrossAllAccounts getDebitsCreditMonthlyConsolidated() {
 		// TODO Auto-generated method stub
 		return aispRemote.getDebitsCreditMonthlyConsolidated(HttpRequestContext.get());
 	}

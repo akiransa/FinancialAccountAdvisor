@@ -106,7 +106,7 @@ public class AispController {
 	}
 	
 	@GetMapping(value = ACCOUNT_ID_BALANCESSUM_MONTHLY_ENDPOINT_ALL)
-	public SummaryDebitsCreditMonthlyConsolidated getDebitsCreditMonthlyConsolidated(
+	public DetailsAcrossAllAccounts getDebitsCreditMonthlyConsolidated(
 
 		) {
 		return aispService.getDebitsCreditMonthlyConsolidated();

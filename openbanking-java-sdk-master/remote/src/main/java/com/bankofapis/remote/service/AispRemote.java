@@ -171,35 +171,86 @@ public class AispRemote {
 
 	/**
 	 * Trying to consolidate across all Accounts
+	 * 
 	 * @param httpRequestHeader
 	 * @return
 	 */
-	public SummaryDebitsCreditMonthlyConsolidated getDebitsCreditMonthlyConsolidated(HttpRequestHeader httpRequestHeader)
-	{
-		
-		SummaryDebitsCreditMonthlyConsolidated summaryDetails = new SummaryDebitsCreditMonthlyConsolidated();
-		List<SummaryDebitsCreditMonthly> detailsList = new ArrayList<SummaryDebitsCreditMonthly>();
+	public DetailsAcrossAllAccounts getDebitsCreditMonthlyConsolidated(HttpRequestHeader httpRequestHeader) {
+
+		DetailsAcrossAllAccounts newObject = new DetailsAcrossAllAccounts();
+		List<DetailsConsolidated> newObjectdetailsList = new ArrayList<DetailsConsolidated>();
+
+		List<DetailsAcrossAllAccounts> detailsList = new ArrayList<DetailsAcrossAllAccounts>();
 		OBReadDataResponse<OBReadAccountList> allAccountsList = getAccountResponse(httpRequestHeader);
-		for (Iterator<OBReadAccountInformation> iterator = allAccountsList.getData().getAccount().iterator(); iterator.hasNext();) {
-			
-			
+		Set<String> collectUniqueMonthYear = new TreeSet<String>();
+		for (Iterator<OBReadAccountInformation> iterator = allAccountsList.getData().getAccount().iterator(); iterator
+				.hasNext();) {
+
 			SummaryDebitsCreditMonthly details = new SummaryDebitsCreditMonthly();
-			String accountId=iterator.next().getAccountId();
+			String accountId = iterator.next().getAccountId();
 			System.err.println(accountId);
-			details=getSumMonthlyDebitCredit(accountId,httpRequestHeader);
-			detailsList.add(details) ;
-			
+			details = getSumMonthlyDebitCredit(accountId, httpRequestHeader);
+
+			/**
+			 * Loop through Details for every uniqueMonthOfYear - GetUniqueMonthYear Loop
+			 * through again looking for every uniqueMonth year- Sum up TotalCredits,
+			 * TotalDebits , AccountBalanceCurrMonth
+			 */
+
+			for (int i = 0; i < details.getDetails().size(); i++) {
+
+				collectUniqueMonthYear.add(details.getDetails().get(i).getMonthAndYear());
+
+			}
 		}
-		summaryDetails.setSummaryDebitsCreditMonthly(detailsList);
-		
-		return summaryDetails;
+
+		for (Iterator iterator = collectUniqueMonthYear.iterator(); iterator.hasNext();) {
+			String string = (String) iterator.next();
+			System.out.println(string);
+			DetailsConsolidated detailsConsolidated = new DetailsConsolidated();
+			double creditBalanceForThisMonthTotal = 0.0;
+			double debitBalanceForThisMonthTotal = 0.0;
+			double availableBalance = 0.0;
+			for (Iterator<OBReadAccountInformation> iterator2 = allAccountsList.getData().getAccount()
+					.iterator(); iterator2.hasNext();) {
+
+				SummaryDebitsCreditMonthly details = new SummaryDebitsCreditMonthly();
+				List<Details> detailsListSumUp = new ArrayList<Details>();
+				String accountId = iterator2.next().getAccountId();
+				System.err.println(accountId);
+				details = getSumMonthlyDebitCredit(accountId, httpRequestHeader);
+
+				for (int i = 0; i < details.getDetails().size(); i++) {
+					if (details.getDetails().get(i).getMonthAndYear().equals(string)) {
+						System.err.println("Found : " + string);
+						creditBalanceForThisMonthTotal = creditBalanceForThisMonthTotal
+								+ details.getDetails().get(i).getSumCredits();
+						debitBalanceForThisMonthTotal = debitBalanceForThisMonthTotal = details.getDetails().get(i)
+								.getSumDebits();
+						
+						availableBalance = availableBalance+details.getDetails().get(i).getAccBalCurMonth();
+						
+					}
+				}
+
+			}
+			detailsConsolidated.setMonthAndYear(string);
+			detailsConsolidated.setAllCredits(creditBalanceForThisMonthTotal);
+			detailsConsolidated.setAllDebits(debitBalanceForThisMonthTotal);
+			detailsConsolidated.setAvailBalance(availableBalance);
+			newObjectdetailsList.add(detailsConsolidated);
+		}
+		newObject.setDetailsConsolidated(newObjectdetailsList);
+
+		return newObject;
 	}
-	
+
 	/**
 	 * Custom Method to retrieve Monthly Credits and Debits also categorised with
 	 * year- MonthAndYear as Key
 	 * 
-	 * @return CurrBalance in this month, all Credits for that month, all debits for that month
+	 * @return CurrBalance in this month, all Credits for that month, all debits for
+	 *         that month
 	 */
 	public SummaryDebitsCreditMonthly getSumMonthlyDebitCredit(String accountId, HttpRequestHeader httpRequestHeader) {
 
@@ -218,35 +269,53 @@ public class AispRemote {
 				OBReadTransaction obReadTransactionGetMonthlyDebit = (OBReadTransaction) iterator.next();
 				Date date1 = new SimpleDateFormat("yyyy-MM-dd")
 						.parse(obReadTransactionGetMonthlyDebit.getBookingDateTime().substring(0, 10));
-				String monthYearUniqueKey = (date1.getYear() + 1900 + "-" + (date1.getMonth() + 1));
+				
+				String month=null;
+				if (date1.getMonth()+1<10) {
+					int monthpls= date1.getMonth()+1;
+					month="0"+Integer.toString(monthpls);
+				}else
+				{
+					month=Integer.toString(date1.getMonth()+1);
+				}
+				String monthYearUniqueKey = (date1.getYear() + 1900 + "-" + month);
 
 				collectUniqueMonthYear.add(monthYearUniqueKey);
 			}
 
 			int detailsIndex = 0;
-			
+
 			for (Iterator iterator = collectUniqueMonthYear.iterator(); iterator.hasNext();) {
 				String monthOfYear = (String) iterator.next();
 				Details details = new Details();
 				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-				
+
 				String previousBookingDateAsString = "1900-01-01T00:00:00.000Z";
-						
-						
+
 				Date previousBookingTime = format.parse(previousBookingDateAsString);
 				double accountBalance = 0.0;
-				
+
 				for (Iterator<OBReadTransaction> iterator2 = transList.getData().getTransactionList()
 						.iterator(); iterator2.hasNext();) {
 					OBReadTransaction obReadTransactionGetMonthlyDebit = (OBReadTransaction) iterator2.next();
 					Date date1 = new SimpleDateFormat("yyyy-MM-dd")
 							.parse(obReadTransactionGetMonthlyDebit.getBookingDateTime().substring(0, 10));
-
-					String monthYearUniqueKey = (date1.getYear() + 1900 + "-" + (date1.getMonth() + 1));
+					
+					String month=null;
+					if (date1.getMonth()+1<10) {
+						int monthpls= date1.getMonth()+1;
+						month="0"+Integer.toString(monthpls);
+					}else
+					{
+						month=Integer.toString(date1.getMonth()+1);
+					}
+					
+					
+					String monthYearUniqueKey = (date1.getYear() + 1900 + "-" + month);
 					details.setAccountNo(obReadTransactionGetMonthlyDebit.getAccountId());
-					
+
 					Date currentBookingTime = format.parse(obReadTransactionGetMonthlyDebit.getBookingDateTime());
-					
+
 					if (monthOfYear.equals(monthYearUniqueKey)) {
 						if (obReadTransactionGetMonthlyDebit.getCreditDebitIndicator().equals("Debit")) {
 							sumDebitAmount = sumDebitAmount
@@ -257,21 +326,20 @@ public class AispRemote {
 									+ Float.parseFloat(obReadTransactionGetMonthlyDebit.getAmount().getAmount());
 
 						}
-						/// if booktime greater than current 
-						if (previousBookingTime!=null) {
-							if(currentBookingTime.compareTo(previousBookingTime)>=0) { 
-								accountBalance=Double.parseDouble(obReadTransactionGetMonthlyDebit.getBalance().getAmount().getAmount());
+						/// if booktime greater than current
+						if (previousBookingTime != null) {
+							if (currentBookingTime.compareTo(previousBookingTime) >= 0) {
+								accountBalance = Double.parseDouble(
+										obReadTransactionGetMonthlyDebit.getBalance().getAmount().getAmount());
 							}
-						}
-						else {
-							previousBookingTime=currentBookingTime;
+						} else {
+							previousBookingTime = currentBookingTime;
 						}
 
 					}
-					
-					
+
 				}
-				
+
 				details.setMonthAndYear(monthOfYear);
 				details.setSumCredits(sumCreditAmount);
 				details.setSumDebits(sumDebitAmount);
@@ -305,20 +373,18 @@ public class AispRemote {
 
 		AccountIdentificationDetails accInfoDetails = new AccountIdentificationDetails();
 		List<AccountInfo> acctInfor = new ArrayList<AccountInfo>();
-		 
 
 		OBReadDataResponse<OBReadAccountList> allAccountsList = getAccountResponse(httpRequestHeader);
 		for (Iterator<OBReadAccountInformation> iterator = allAccountsList.getData().getAccount().iterator(); iterator
 				.hasNext();) {
-			List<OBReadAccount> acc= iterator.next().getAccount();
-			
+			List<OBReadAccount> acc = iterator.next().getAccount();
+
 			for (int i = 0; i < acc.size(); i++) {
-				AccountInfo actInfo= new AccountInfo();
+				AccountInfo actInfo = new AccountInfo();
 				actInfo.setAccountIdentificationNumber(acc.get(i).getIdentification());
 				actInfo.setAccountName((acc.get(i).getName()));
 				acctInfor.add(actInfo);
 			}
-			
 
 		}
 		accInfoDetails.setAccountInfo(acctInfor);
