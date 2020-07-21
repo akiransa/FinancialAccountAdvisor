@@ -31,12 +31,12 @@ Using the Existing APIs we were able to come up with the following endpoints:
 >**ACCOUNT_ID_BALANCESSUM_MONTHLY_ENDPOINT_ALL ="/accounts/transactions/monthly"**
 >- Loop through all the Accounts for which user has provided Consent with.
 >- Again categorised by Month And Year, retrieves all the Debits and Credits , across all the accounts.
->
->    {
->        "MonthAndYear": "2018-10",
->        "AllDebits": 322.13999938964844,
->        "AllCredits": 500.0,
->        "AvailBalanceForCurMonth": 290760.26
->    }
+
+    {
+        "MonthAndYear": "2018-10",
+        "AllDebits": 322.13999938964844,
+        "AllCredits": 500.0,
+        "AvailBalanceForCurMonth": 290760.26
+    }
 
 
