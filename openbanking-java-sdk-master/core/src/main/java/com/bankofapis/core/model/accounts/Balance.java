@@ -16,7 +16,8 @@ public class Balance {
     private double sumAllCredits;
     
     
-
+    @JsonProperty("AvgBalPerMonAvailable")
+    private double averageBalance;
 
 	public List<BalanceDetails> getBalanceDetails() {
 		return balanceDetails;
@@ -40,6 +41,14 @@ public class Balance {
 
 	public void setSumAllCredits(double sumAllCredits) {
 		this.sumAllCredits = sumAllCredits;
+	}
+
+	public double getAverageBalance() {
+		return averageBalance;
+	}
+
+	public void setAverageBalance(double averageBalance) {
+		this.averageBalance = averageBalance;
 	}
 
 

@@ -171,7 +171,8 @@ public class AispRemote {
 			
 			balDetailsMain.add(balDetail);
 		}
-
+		
+		returnObj.setAverageBalance((creditAmount-debitAmount)/balDetailsMain.size());
 		returnObj.setSumAllCredits(creditAmount);
 		returnObj.setSumAllDebits(debitAmount);
 		returnObj.setBalanceDetails(balDetailsMain);
