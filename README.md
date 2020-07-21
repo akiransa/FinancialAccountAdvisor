@@ -60,6 +60,7 @@ Using the Existing APIs we were able to come up with the following endpoints:
     ],
     "SumOfAllDebits": 0.0,
     "SumOfAllCredits": 258428.18376922607
+    "AvgBalPerMonAvailable": 63615.80344963074
     }
 
 
