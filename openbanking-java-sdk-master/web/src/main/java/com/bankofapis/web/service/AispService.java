@@ -199,6 +199,11 @@ public class AispService {
 		
 		
 	}
+
+	public SummaryDebitsCreditMonthlyConsolidated getDebitsCreditMonthlyConsolidated() {
+		// TODO Auto-generated method stub
+		return aispRemote.getDebitsCreditMonthlyConsolidated(HttpRequestContext.get());
+	}
     
 }
 

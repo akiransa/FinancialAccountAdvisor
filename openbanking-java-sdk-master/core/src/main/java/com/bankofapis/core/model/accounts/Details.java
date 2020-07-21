@@ -6,14 +6,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Details {
 	
+	@JsonProperty("AccountNo")
+    private String accountNo;
 	
 	@JsonProperty("MonthAndYear")
     private String monthAndYear;
 
-    @JsonProperty("SumOfCredits")
+    @JsonProperty("TotalCreditsCurMonth")
     private double sumCredits;
     
-    @JsonProperty("SumOfDebits")
+    @JsonProperty("TotalDebitsCurMonth")
     private double sumDebits;
     
     @JsonProperty("BalanceForThisMonth")
@@ -67,6 +69,14 @@ public class Details {
 
 	public void setAccBalCurMonth(double accBalCurMonth) {
 		this.accBalCurMonth = accBalCurMonth;
+	}
+
+	public String getAccountNo() {
+		return accountNo;
+	}
+
+	public void setAccountNo(String accountNo) {
+		this.accountNo = accountNo;
 	}
     
 }

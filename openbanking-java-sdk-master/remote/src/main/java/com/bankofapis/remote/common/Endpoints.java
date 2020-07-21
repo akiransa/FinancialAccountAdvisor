@@ -26,6 +26,7 @@ public class Endpoints {
     public static final String ACCOUNT_ID_BALANCESSUM_ENDPOINT = "/accounts/balances";
     public static final String ACCOUNT_LISTALL_ENDPOINT = "/accountsInfo";
     public static final String ACCOUNT_ID_BALANCESSUM_MONTHLY_ENDPOINT ="/accounts/{accountId}/transactions/monthly";
+    public static final String ACCOUNT_ID_BALANCESSUM_MONTHLY_ENDPOINT_ALL ="/accounts/transactions/monthly/all";
     
     
     

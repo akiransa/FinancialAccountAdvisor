@@ -169,22 +169,37 @@ public class AispRemote {
 
 	}
 
-//	public SummaryDebitsCreditMonthly getSumMonthlyDebitCredit(HttpRequestHeader httpRequestHeader)
-//	{
-//		SummaryDebitsCreditMonthly summaryDetails = new SummaryDebitsCreditMonthly();
-//		OBReadDataResponse<OBReadAccountList> allAccountsList = getAccountResponse(httpRequestHeader);
-//		for (Iterator<OBReadAccountInformation> iterator = allAccountsList.getData().getAccount().iterator(); iterator.hasNext();) {
-//			System.err.println(iterator.next().getAccountId());
-//			
-//			summaryDetails=getSumMonthlyDebitCredit(iterator.next().getAccountId(),httpRequestHeader);
-//			
-//		}
-//	}
+	/**
+	 * Trying to consolidate across all Accounts
+	 * @param httpRequestHeader
+	 * @return
+	 */
+	public SummaryDebitsCreditMonthlyConsolidated getDebitsCreditMonthlyConsolidated(HttpRequestHeader httpRequestHeader)
+	{
+		
+		SummaryDebitsCreditMonthlyConsolidated summaryDetails = new SummaryDebitsCreditMonthlyConsolidated();
+		List<SummaryDebitsCreditMonthly> detailsList = new ArrayList<SummaryDebitsCreditMonthly>();
+		OBReadDataResponse<OBReadAccountList> allAccountsList = getAccountResponse(httpRequestHeader);
+		for (Iterator<OBReadAccountInformation> iterator = allAccountsList.getData().getAccount().iterator(); iterator.hasNext();) {
+			
+			
+			SummaryDebitsCreditMonthly details = new SummaryDebitsCreditMonthly();
+			String accountId=iterator.next().getAccountId();
+			System.err.println(accountId);
+			details=getSumMonthlyDebitCredit(accountId,httpRequestHeader);
+			detailsList.add(details) ;
+			
+		}
+		summaryDetails.setSummaryDebitsCreditMonthly(detailsList);
+		
+		return summaryDetails;
+	}
+	
 	/**
 	 * Custom Method to retrieve Monthly Credits and Debits also categorised with
 	 * year- MonthAndYear as Key
 	 * 
-	 * @return
+	 * @return CurrBalance in this month, all Credits for that month, all debits for that month
 	 */
 	public SummaryDebitsCreditMonthly getSumMonthlyDebitCredit(String accountId, HttpRequestHeader httpRequestHeader) {
 
@@ -198,9 +213,6 @@ public class AispRemote {
 
 			OBReadDataResponse<OBReadTransactionList> transList = getTransactionsById(accountId, httpRequestHeader);
 
-			/**
-			 * Get All Credits Sums Monthly
-			 */
 			for (Iterator<OBReadTransaction> iterator = transList.getData().getTransactionList().iterator(); iterator
 					.hasNext();) {
 				OBReadTransaction obReadTransactionGetMonthlyDebit = (OBReadTransaction) iterator.next();
@@ -231,7 +243,7 @@ public class AispRemote {
 							.parse(obReadTransactionGetMonthlyDebit.getBookingDateTime().substring(0, 10));
 
 					String monthYearUniqueKey = (date1.getYear() + 1900 + "-" + (date1.getMonth() + 1));
-					
+					details.setAccountNo(obReadTransactionGetMonthlyDebit.getAccountId());
 					
 					Date currentBookingTime = format.parse(obReadTransactionGetMonthlyDebit.getBookingDateTime());
 					
@@ -247,23 +259,19 @@ public class AispRemote {
 						}
 						/// if booktime greater than current 
 						if (previousBookingTime!=null) {
-							System.err.println(previousBookingTime.compareTo(currentBookingTime));
 							if(currentBookingTime.compareTo(previousBookingTime)>=0) { 
 								accountBalance=Double.parseDouble(obReadTransactionGetMonthlyDebit.getBalance().getAmount().getAmount());
-								System.err.println(accountBalance);
-								System.out.println("reached here.. !atleast");
 							}
 						}
 						else {
 							previousBookingTime=currentBookingTime;
-							System.err.println("reached here.. set booking time?");
 						}
 
 					}
 					
 					
 				}
-
+				
 				details.setMonthAndYear(monthOfYear);
 				details.setSumCredits(sumCreditAmount);
 				details.setSumDebits(sumDebitAmount);
@@ -273,20 +281,6 @@ public class AispRemote {
 
 				}
 				details.setAccBalCurMonth(accountBalance);
-				
-				
-
-//				double accountBalance = 0.0;
-//				for (int i = 0; i < detailsList.size() + 1; i++) {
-//					if (i != 0) {
-//						accountBalance = detailsList.get(i - 1).getAccBalCurMonth() + sumCreditAmount - sumDebitAmount;
-//					} else {
-//						accountBalance = sumCreditAmount - sumDebitAmount;
-//					}
-//
-//				}
-
-				//details.setAccBalCurMonth(accountBalance);
 				detailsList.add(details);
 
 				detailsIndex = detailsIndex + 1;
