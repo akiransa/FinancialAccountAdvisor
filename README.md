@@ -92,4 +92,35 @@ Using the Existing APIs we were able to come up with the following endpoints:
         "AvailBalanceForCurMonth": 290760.26
     }
 
-
+>**ACCOUNT_ID_TRANSACTIONS_CATEGORY_MON_ENDPOINT = "/accounts/{accountId}/transaction_category/monthly";";**
+>-  This is for retrieving a transactions in the month & assign a category
+   
+    {
+        "category": "Regular Payments",
+        "Amount": {
+            "Amount": "26.48",
+            "Currency": "GBP"
+        }
+    },
+    {
+        "category": "HouseHold Expense",
+        "Amount": {
+            "Amount": "26.48",
+            "Currency": "GBP"
+        }
+    },
+    {
+        "category": "Dining",
+        "Amount": {
+            "Amount": "26.48",
+            "Currency": "GBP"
+        }
+    },
+    {
+        "category": "Amazon",
+        "Amount": {
+            "Amount": "26.48",
+            "Currency": "GBP"
+        }
+    }
+]
