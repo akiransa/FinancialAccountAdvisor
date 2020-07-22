@@ -146,4 +146,5 @@ Using the Existing APIs we were able to come up with the following endpoints:
 >-  This is for displaying the graphical trend of amount spent against various categories
 
   Python module (app.py) to recive the json details containing category and amount and publish the graph.
-  ![Alt text](FinancialAccountAdvisor/Graph/books_read.jpg?raw=true "Graph")
+  <img src=“https://github.com/akiransa/FinancialAccountAdvisor/blob/master/Graph/books_read.jpg”>
+  
