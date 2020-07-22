@@ -147,7 +147,7 @@ Using the Existing APIs we were able to come up with the following endpoints:
 
   Python module (app.py) to recive the json details containing category and amount and publish the graph.
   <img
-src=“img src="./books_read.jpg">”
+img src="./books_read.jpg">”
 raw=true
 alt=“Analysis Trend”
 style=“margin-right: 10px;”
