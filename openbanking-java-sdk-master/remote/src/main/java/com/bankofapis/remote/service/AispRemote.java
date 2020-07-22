@@ -256,6 +256,95 @@ public class AispRemote {
 		System.out.println("Done!\n**********************************************************");
 		return newObject;
 	}
+	
+	/**
+	 * Custom Method to retrieve display categorise transactions agaisnt the account id
+	 * 
+	*/
+   public List<OBCAtTrns> getMonthlyTransactionsById(String accountId, HttpRequestHeader httpRequestHeader) {
+        System.out.println("monthly");
+
+        float creditAmount = 0;
+        OBReadDataResponse<OBReadTransactionList> result = getTransactionsById(accountId, httpRequestHeader);
+        List<OBCAtTrns> transactionList_out = new ArrayList<OBCAtTrns>();
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        LocalDate today = LocalDate.now();
+        List<OBReadTransaction> transactionList_lp = result.getData().getTransactionList();
+         for (OBReadTransaction tran1 : transactionList_lp) {
+            String newstr=tran1.getBookingDateTime();
+            LocalDate localDate1 = LocalDate.parse(newstr, inputFormatter);
+            LocalDate addedDate1 = today.minusDays(30);
+            if ((localDate1.isAfter(addedDate1)) || (localDate1.isEqual(today))) {
+                OBCAtTrns returnObj = new OBCAtTrns();
+                returnObj.setAmount(tran1.getAmount());
+                returnObj.setCategory(tran1.getTransactionInformation());
+              //  System.out.println("AISP:"+returnObj.getCategory());
+                transactionList_out.add(returnObj);
+            }
+        }
+       for (OBCAtTrns tran1 : transactionList_out){
+            System.out.println("Final:"+tran1.getCategory());
+        }
+        return transactionList_out;
+
+    }
+		/**
+	 * Custom Method to retrieve display sum of all amount spent against a transaction category
+	 * 
+	*/
+    public List<OBCAtTrns> getCategorySumSpent(String accountId, HttpRequestHeader httpRequestHeader) {
+        System.out.println("monthly");
+        List<OBCAtTrns> result = getMonthlyTransactionsById(accountId, httpRequestHeader);
+        List<OBCAtTrns> transactionList_out = new ArrayList<OBCAtTrns>();
+       // List<OBCAtTrns> transactionList_lp = new ArrayList<OBCAtTrns>();
+        String tmp_Category="";
+        double sumCategoryAmount = 0;
+        //OBCAtTrns ChkObj = new OBCAtTrns();
+        List <String>cat_added = new ArrayList();
+        OBReadAmount tmp_amt= new OBReadAmount();
+        for (OBCAtTrns tranOut : result) {
+            System.out.println("*****Sum IN : " + tranOut.getCategory());
+            tmp_Category=tranOut.getCategory();
+            sumCategoryAmount=0;
+            boolean found_category= false;
+            int size = transactionList_out.size();
+            System.out.println("Size is : "+ size);
+            if( size >=1){
+                  for (String chk : cat_added){
+                    System.out.println(tranOut.getCategory() +  " ===" + chk);
+                    if (tranOut.getCategory() == chk) {
+                        found_category = true;
+                        System.out.println("Found: "+ chk);
+                        break;
+                    }
+            }}
+            else{
+                    cat_added.add(tranOut.getCategory());
+                    found_category=false;
+                }
+
+
+            if (found_category == false ){
+                System.out.println("Sum: " + tranOut.getCategory());
+
+                for(OBCAtTrns tranIN : result) {
+                    if ((tranIN.getCategory() == tmp_Category)) {
+                        sumCategoryAmount = sumCategoryAmount
+                            + Float.parseFloat(tranIN.getAmount().getAmount());
+                 }
+                }
+                tmp_amt.setAmount(Double.toString(sumCategoryAmount));
+                tmp_amt.setCurrency(tranOut.getAmount().getCurrency());
+                OBCAtTrns returnObj = new OBCAtTrns();
+                returnObj.setAmount(tmp_amt);
+                returnObj.setCategory(tranOut.getCategory());
+                System.out.println("Adding : "+ tranOut.getCategory());
+                transactionList_out.add(returnObj);
+                cat_added.add(tranOut.getCategory());
+                }
+            }
+        return transactionList_out;
+    }
 
 	/**
 	 * Custom Method to retrieve Monthly Credits and Debits also categorised with

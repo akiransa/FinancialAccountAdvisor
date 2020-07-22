@@ -15,6 +15,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static com.bankofapis.core.model.common.Constants.CLIENT_CRED_GRANT_TYPE_VALUE;
 import static com.bankofapis.core.model.common.Constants.SCOPE_ACCOUNT_VALUE;
@@ -128,7 +129,28 @@ public class AispService {
             throw ex;
         }
     }
+    public List<OBCAtTrns> getMonthlyTransactionsById(String accountId) {
 
+        aispRemote.getMonthlyTransactionsById(accountId, HttpRequestContext.get());
+         try {
+            return aispRemote.getMonthlyTransactionsById(accountId, HttpRequestContext.get());
+        } catch (HttpClientErrorException ex) {
+            logger.error(ex.getResponseBodyAsString(), ex);
+            throw ex;
+        }
+
+    }
+    public List<OBCAtTrns> getCategorySumSpent(String accountId) {
+
+        aispRemote.getCategorySumSpent(accountId, HttpRequestContext.get());
+        try {
+            return aispRemote.getCategorySumSpent(accountId, HttpRequestContext.get());
+        } catch (HttpClientErrorException ex) {
+            logger.error(ex.getResponseBodyAsString(), ex);
+            throw ex;
+        }
+
+    }
     public OBReadDataResponse<OBReadDirectDebitList> getDirectDebitsById(String accountId) {
         try {
             return aispRemote.getDirectDebitsById(accountId, HttpRequestContext.get());
