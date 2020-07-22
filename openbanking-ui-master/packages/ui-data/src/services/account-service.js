@@ -88,6 +88,16 @@ export function getAccountProducts(dispatch, params) {
         dispatch(setData(response))
     })
 }
+// Extended
+
+export function getAllAccountInfo(dispatch) {
+    createRequest(dispatch, '/aisp/accountsInfo', 'GET', null, {}, function (
+        response
+    ) {
+        //callback placeholder where one or multiple actions can be dispatched
+        dispatch(setData(response))
+    })
+}
 
 export function getAccountBalancesSum(dispatch, params) {
     createRequest(
@@ -114,3 +124,54 @@ export function getDebitsCreditMonthlyConsolidated(dispatch, params) {
         }
     )
 }
+/**
+export function getSumMonthlyDebitCredit(dispatch, accountId) {
+    createRequest(
+        dispatch,
+        `/aisp/accounts/${accountId}/transactions/monthly`,
+        'GET',
+        params,
+        {},
+        function (response) {
+            dispatch(setData(response))
+            
+            // if (response.Data.Account.length > 0) {
+            //     dispatch(setAccountId(response.Data.Account[0].AccountId))
+            // }
+        }
+    )
+}
+
+export function getCategorySumSpent(dispatch, accountId) {
+    createRequest(
+        dispatch,
+        `/aisp/accounts/${accountId}/transaction_category/total`,
+        'GET',
+        params,
+        {},
+        function (response) {
+            dispatch(setData(response))
+            // if (response.Data.Account.length > 0) {
+            //     dispatch(setAccountId(response.Data.Account[0].AccountId))
+            // }
+        }
+    )
+}
+
+export function getMonthlyTransactionsById(dispatch, accountId) {
+    createRequest(
+        dispatch,
+        `/aisp/accounts/${accountId}/transaction_category/monthly`,
+        'GET',
+        params,
+        {},
+        function (response) {
+            dispatch(setData(response))
+            // if (response.Data.Account.length > 0) {
+            //     dispatch(setAccountId(response.Data.Account[0].AccountId))
+            // }
+        }
+    )
+}
+
+ */

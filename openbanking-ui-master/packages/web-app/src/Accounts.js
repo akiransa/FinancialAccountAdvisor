@@ -86,15 +86,6 @@ const Accounts = () => {
 
                     <button
                         className="buttonLinks"
-                        onClick={() =>
-                            getSumMonthlyDebitCredit(dispatch, accountId)
-                        }
-                    >
-                        Get Monthly Debits and Credits - Monthly
-                    </button>
-
-                    <button
-                        className="buttonLinks"
                         onClick={() => getAccountBalancesSum(dispatch)}
                     >
                         Get Balance Consolidated across All Accounts
@@ -108,10 +99,17 @@ const Accounts = () => {
                     >
                         Get Transactions Consolidated across All Accounts -
                         Monthly
-                        {/* <div className="displayInfo">
-                            <InfoDisplay data={bardata} />
-                        </div> */}
                     </button>
+
+                    {/* <button
+                        className="buttonLinks"
+                        onClick={() =>
+                            getSumMonthlyDebitCredit(dispatch, accountId)
+                        }
+                    >
+                        Get Monthly Debits and Credits - Monthly
+                    </button>
+                    
 
                     <button
                         className="buttonLinks"
@@ -120,6 +118,8 @@ const Accounts = () => {
                         Get Transaction Category
                     </button>
 
+
+
                     <button
                         className="buttonLinks"
                         onClick={() =>
@@ -127,7 +127,7 @@ const Accounts = () => {
                         }
                     >
                         Get Transaction Category - Monthly
-                    </button>
+                    </button> */}
                 </div>
                 <div className="displayInfo">
                     <InfoDisplay data={data} />
