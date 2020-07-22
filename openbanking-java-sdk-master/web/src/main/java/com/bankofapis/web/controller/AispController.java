@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.util.List;
+
 import static com.bankofapis.core.model.common.Constants.CONSENT_ID_HEADER;
 import static com.bankofapis.remote.common.Endpoints.*;
 
@@ -59,11 +61,24 @@ public class AispController {
 		return aispService.getTransactionsById(accountId);
 	}
 
-	@GetMapping(value = ACCOUNT_ID_BENEFICIARIES_ENDPOINT)
-	public OBReadDataResponse<OBReadBeneficiaryList> getBeneficiaries(
-			@PathVariable(value = "accountId") String accountId) {
-		return aispService.getBeneficiariesById(accountId);
-	}
+     @GetMapping(value = ACCOUNT_ID_TRANSACTIONS_CATEGORY_MON_ENDPOINT)
+    public List<OBCAtTrns> getMonthlyTransactionsById(
+            @PathVariable(value = "accountId") String accountId) {
+         aispService.getMonthlyTransactionsById(accountId);
+        return aispService.getMonthlyTransactionsById(accountId);
+    }
+
+    @GetMapping(value = ACCOUNT_ID_TRANSACTIONS_CATEGORY_SUM_ENDPOINT)
+    public List<OBCAtTrns> getCategorySumSpent(
+            @PathVariable(value = "accountId") String accountId) {
+        aispService.getMonthlyTransactionsById(accountId);
+        return aispService.getCategorySumSpent(accountId);
+    }
+    @GetMapping(value = ACCOUNT_ID_BENEFICIARIES_ENDPOINT)
+    public OBReadDataResponse<OBReadBeneficiaryList> getBeneficiaries(
+        @PathVariable(value = "accountId") String accountId) {
+        return aispService.getBeneficiariesById(accountId);
+    }
 
 	@GetMapping(value = ACCOUNT_ID_DIRECT_DEBITS_ENDPOINT)
 	public OBReadDataResponse<OBReadDirectDebitList> getDirectDebitsById(
