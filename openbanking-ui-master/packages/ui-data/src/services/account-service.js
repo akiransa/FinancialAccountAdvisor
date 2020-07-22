@@ -88,3 +88,29 @@ export function getAccountProducts(dispatch, params) {
         dispatch(setData(response))
     })
 }
+
+export function getAccountBalancesSum(dispatch, params) {
+    createRequest(
+        dispatch,
+        '/aisp/accounts/balances',
+        'GET',
+        params,
+        {},
+        function (response) {
+            dispatch(setData(response))
+        }
+    )
+}
+
+export function getDebitsCreditMonthlyConsolidated(dispatch, params) {
+    createRequest(
+        dispatch,
+        '/aisp/accounts/transactions/monthly',
+        'GET',
+        params,
+        {},
+        function (response) {
+            dispatch(setData(response))
+        }
+    )
+}
