@@ -124,20 +124,20 @@ export function getDebitsCreditMonthlyConsolidated(dispatch, params) {
         }
     )
 }
-/**
+
 export function getSumMonthlyDebitCredit(dispatch, accountId) {
     createRequest(
         dispatch,
         `/aisp/accounts/${accountId}/transactions/monthly`,
         'GET',
-        params,
+        null,
         {},
         function (response) {
             dispatch(setData(response))
-            
-            // if (response.Data.Account.length > 0) {
-            //     dispatch(setAccountId(response.Data.Account[0].AccountId))
-            // }
+
+            if (response.Details.length > 0) {
+                dispatch(setAccountId(accountId))
+            }
         }
     )
 }
@@ -147,7 +147,7 @@ export function getCategorySumSpent(dispatch, accountId) {
         dispatch,
         `/aisp/accounts/${accountId}/transaction_category/total`,
         'GET',
-        params,
+        null,
         {},
         function (response) {
             dispatch(setData(response))
@@ -163,7 +163,7 @@ export function getMonthlyTransactionsById(dispatch, accountId) {
         dispatch,
         `/aisp/accounts/${accountId}/transaction_category/monthly`,
         'GET',
-        params,
+        null,
         {},
         function (response) {
             dispatch(setData(response))
@@ -173,5 +173,3 @@ export function getMonthlyTransactionsById(dispatch, accountId) {
         }
     )
 }
-
- */

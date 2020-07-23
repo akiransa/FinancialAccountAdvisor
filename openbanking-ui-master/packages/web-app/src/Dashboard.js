@@ -37,13 +37,7 @@ const Dashboard = () => {
                                 className="journeyBtn"
                                 onClick={() => setType('aisp')}
                             >
-                                Account Information Service Provider (AISP)
-                            </button>
-                            <button
-                                className="journeyBtn"
-                                // to do
-                            >
-                                Payment Initiation Service Provider (PISP)
+                                Financial Account Advisor
                             </button>
                         </div>
                     </div>

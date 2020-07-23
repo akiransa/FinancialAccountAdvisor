@@ -27,7 +27,7 @@ const Accounts = () => {
 
     return (
         <div className="mainContainer">
-            <h2 className="pageTitle">AISP Information</h2>
+            <h2 className="pageTitle"></h2>
             <div className="apiContainer">
                 <div className="btnContainer">
                     <button
@@ -35,46 +35,6 @@ const Accounts = () => {
                         onClick={() => getAccountList(dispatch)}
                     >
                         Get Account List
-                    </button>
-                    <button
-                        className="buttonLinks"
-                        onClick={() => getAccountById(dispatch, accountId)}
-                    >
-                        Get Account By Id
-                    </button>
-                    <button
-                        className="buttonLinks"
-                        onClick={() => getAccountBalances(dispatch, accountId)}
-                    >
-                        Get Account Balances
-                    </button>
-                    <button
-                        className="buttonLinks"
-                        onClick={() =>
-                            getAccountDirectDebits(dispatch, accountId)
-                        }
-                    >
-                        Get Account Direct Debits
-                    </button>
-                    <button
-                        className="buttonLinks"
-                        onClick={() =>
-                            getAccountTransactions(dispatch, accountId)
-                        }
-                    >
-                        Get Account Transactions
-                    </button>
-                    <button
-                        className="buttonLinks"
-                        onClick={() => getAccountProducts(dispatch, accountId)}
-                    >
-                        Get Account Products
-                    </button>
-                    <button
-                        className="buttonLinks"
-                        onClick={() => (dispatch, accountId)}
-                    >
-                        Get Account Standing Orders
                     </button>
                     {/* Added functionalities */}
                     <button
@@ -101,6 +61,31 @@ const Accounts = () => {
                         Monthly
                     </button>
 
+                    <button
+                        className="buttonLinks"
+                        onClick={() =>
+                            getSumMonthlyDebitCredit(dispatch, accountId)
+                        }
+                    >
+                        Get Monthly Debits and Credits - Monthly
+                    </button>
+
+                    <button
+                        className="buttonLinks"
+                        onClick={() => getCategorySumSpent(dispatch, accountId)}
+                    >
+                        Get Transaction Category
+                    </button>
+
+                    <button
+                        className="buttonLinks"
+                        onClick={() =>
+                            getMonthlyTransactionsById(dispatch, accountId)
+                        }
+                    >
+                        Get Transaction Category - Monthly
+                    </button>
+
                     {/* <button
                         className="buttonLinks"
                         onClick={() =>
@@ -111,12 +96,7 @@ const Accounts = () => {
                     </button>
                     
 
-                    <button
-                        className="buttonLinks"
-                        onClick={() => getCategorySumSpent(dispatch, accountId)}
-                    >
-                        Get Transaction Category
-                    </button>
+                   
 
 
 
